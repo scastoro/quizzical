@@ -1,16 +1,37 @@
 import React from "react";
 import parse from "html-react-parser";
+import uuid from "react-uuid";
 
-export default function Question({ title, incorrect, correct }) {
+export default function Question({ title, incorrect, handleClick, correct }) {
   const [answers, setAnswers] = React.useState([]);
-  React.useEffect(
-    () => setAnswers([...incorrect, correct].sort(() => Math.random() - 0.5)),
-    []
-  );
-  console.log(answers);
-  console.log(correct);
+  React.useEffect(() => {
+    let newAnswers = [];
+    incorrect.forEach((answer) => {
+      newAnswers.push({
+        questionAnswer: answer,
+        isSelected: false,
+        isCorrect: false,
+        id: uuid(),
+      });
+    });
+    newAnswers.push({
+      questionAnswer: correct,
+      isSelected: false,
+      isCorrect: true,
+      id: uuid(),
+    });
+    setAnswers(newAnswers.sort(() => Math.random() - 0.5));
+  }, []);
   const buttons = answers.map((item) => (
-    <button className="answer">{parse(item)}</button>
+    <button
+      onClick={(event, answers) => handleClick(event, answers)}
+      className="answer"
+      id={item.id}
+      iscorrect={`${item.isCorrect}`}
+      isselected={`${item.isSelected}`}
+    >
+      {parse(item.questionAnswer)}
+    </button>
   ));
   return (
     <section className="question">

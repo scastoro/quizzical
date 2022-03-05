@@ -13,11 +13,15 @@ export default function Quiz() {
       setQuestions(data.results);
     })();
   }, []);
+  function buttonClicked(event, answers) {
+    console.log(event.target, answers);
+  }
   const questionsArray = questions.map((question, index) => (
     <Question
       title={question.question}
       correct={question.correct_answer}
       incorrect={question.incorrect_answers}
+      handleClick={buttonClicked}
     />
   ));
   return (
