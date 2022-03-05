@@ -1,14 +1,7 @@
 import React from "react";
 import parse from "html-react-parser";
 
-export default function Question({ title, incorrect, correct }) {
-  const [answers, setAnswers] = React.useState([]);
-  React.useEffect(
-    () => setAnswers([...incorrect, correct].sort(() => Math.random() - 0.5)),
-    []
-  );
-  console.log(answers);
-  console.log(correct);
+export default function Question({ title, answers, correct }) {
   const buttons = answers.map((item) => (
     <button className="answer">{parse(item)}</button>
   ));

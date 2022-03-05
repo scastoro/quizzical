@@ -13,11 +13,26 @@ export default function Quiz() {
       setQuestions(data.results);
     })();
   }, []);
+  const [answers, setAnswers] = React.useState([]);
+  React.useEffect(() => {
+    console.log(questions.incorrect_answers);
+    try {
+      questions;
+      setAnswers(
+        [
+          ...questions.map((item) => item.incorrect_answers),
+          questions.correct_answer,
+        ].sort(() => Math.random() - 0.5)
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }, [questions]);
   const questionsArray = questions.map((question, index) => (
     <Question
       title={question.question}
       correct={question.correct_answer}
-      incorrect={question.incorrect_answers}
+      answers={answers}
     />
   ));
   return (
