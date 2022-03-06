@@ -6,6 +6,7 @@ export default function Quiz() {
   const [questions, setQuestions] = React.useState([]);
   const [formQuestions, setFormQuestions] = React.useState([]);
   const [questionsArray, setQuestionsArray] = React.useState([]);
+  const [count, setCount] = React.useState(0);
 
   React.useEffect(() => {
     (async () => {
@@ -49,8 +50,58 @@ export default function Quiz() {
     })();
   }, [questions]);
 
-  function toggleClick(ansArr, corrAns, event) {
-    console.log(event, ansArr, corrAns);
+  function toggleClick(answerArr, correctAns, questId, event) {
+    console.log(event, answerArr, correctAns, questId);
+    setFormQuestions((prevFormQuest) => {
+      // Set formatted questions to new array with the isSelected property of the matching answer toggled
+      // Map through containing array to find matching Question index
+      return prevFormQuest.map((quest) => {
+        if (quest.id === questId) {
+          return {
+            ...quest,
+            // Map through answers array of matching Question
+            answers: quest.answers.map((answer) => {
+              // Set isSelected value to true if id matches
+              if (answer.id === event.target.id) {
+                return {
+                  ...answer,
+                  isSelected: true,
+                };
+              } else {
+                // Else set all other answers isSelected to false
+                // This ensures only one question can be toggled at one time
+                return {
+                  ...answer,
+                  isSelected: false,
+                };
+              }
+            }),
+          };
+        } else {
+          return quest;
+        }
+      });
+    });
+  }
+  // Function to loop through state and check if selected answers are correct
+  function checkAnswers() {
+    setFormQuestions((prevFormQuest) => {
+      return prevFormQuest.map((question) => {
+        return {
+          ...question,
+          answers: question.answers.map((answer) => {
+            if (answer.isSelected) {
+              return {
+                ...answer,
+                isChecked: true,
+              };
+            } else {
+              return answer;
+            }
+          }),
+        };
+      });
+    });
   }
 
   React.useEffect(() => {
@@ -60,8 +111,14 @@ export default function Quiz() {
           title={question.question}
           correct={question.correct_answer}
           answers={question.answers}
+          id={question.id}
           handleClick={(event) =>
-            toggleClick(question.answers, question.correct_answer, event)
+            toggleClick(
+              question.answers,
+              question.correct_answer,
+              question.id,
+              event
+            )
           }
         />
       ));
@@ -70,10 +127,33 @@ export default function Quiz() {
     })();
   }, [formQuestions]);
 
+  function countCorrect() {
+    let count = 0;
+    formQuestions.forEach((question) => {
+      question.answers.forEach((answer) => {
+        if (answer.id === question.correct_answer.id && answer.isSelected) {
+          count++;
+        }
+      });
+    });
+    setCount(count);
+  }
+
   return (
     <section className="quiz">
       {questionsArray.length > 0 ? questionsArray : null}
-      <button className="check-answers">Check answers</button>
+      <button
+        onClick={() => {
+          checkAnswers();
+          countCorrect();
+        }}
+        className="check-answers"
+      >
+        Check answers
+      </button>
+      <span className="game-score">
+        {count > 0 && `You scored ${count}/5 correct answers`}
+      </span>
     </section>
   );
 }

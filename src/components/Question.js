@@ -1,6 +1,5 @@
 import React from "react";
 import parse from "html-react-parser";
-import uuid from "react-uuid";
 
 export default function Question({ title, answers, correct, handleClick }) {
   // const buttons = answers.map((item) => (
@@ -13,11 +12,32 @@ export default function Question({ title, answers, correct, handleClick }) {
       <section className="answer-container">
         {" "}
         {answers.length > 0
-          ? answers.map((item) => (
-              <button className="answer" onClick={handleClick}>
-                {parse(item.answer)}
-              </button>
-            ))
+          ? answers.map((item) => {
+              let styles = {};
+              if (item.isSelected) {
+                styles.backgroundColor = "#D6DBF5";
+              }
+              if (item.isSelected && item.isChecked && item.id === correct.id) {
+                styles.backgroundColor = "#94D7A2";
+              } else if (
+                item.isSelected &&
+                item.isChecked &&
+                item.id !== correct.id
+              ) {
+                styles.backgroundColor = "#F8BCBC";
+                styles.opacity = "50%";
+              }
+              return (
+                <button
+                  id={item.id}
+                  style={styles}
+                  className="answer"
+                  onClick={handleClick}
+                >
+                  {parse(item.answer)}
+                </button>
+              );
+            })
           : null}
       </section>
       <section className="question-border"></section>
