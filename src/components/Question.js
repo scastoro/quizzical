@@ -22,21 +22,21 @@ export default function Question({
               let styles = {};
               if (item.isSelected) {
                 styles.backgroundColor = "#D6DBF5";
-                styles.border = "none";
+                styles.border = "solid 1px #D6DBF5";
               }
               if (gameState) {
                 styles.cursor = "default";
               }
               if (item.isChecked && item.id === correct.id) {
                 styles.backgroundColor = "#94D7A2";
-                styles.border = "none";
+                styles.border = "solid 1px #94D7A2";
               } else if (
                 item.isSelected &&
                 item.isChecked &&
                 item.id !== correct.id
               ) {
                 styles.backgroundColor = "#F8BCBC";
-                styles.border = "none";
+                styles.border = "#F8BCBC solid 1px";
                 styles.opacity = "50%";
               }
               return (

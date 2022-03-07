@@ -1,6 +1,7 @@
 import React from "react";
 import Question from "./Question";
 import uuid from "react-uuid";
+import Start from "./Start";
 
 export default function Quiz() {
   const [questions, setQuestions] = React.useState([]);
@@ -9,6 +10,7 @@ export default function Quiz() {
   const [count, setCount] = React.useState(0);
   const [gameOver, setGameOver] = React.useState(false);
   const [newGame, setNewGame] = React.useState(false);
+  const [showStart, setShowStart] = React.useState(true);
 
   React.useEffect(() => {
     (async () => {
@@ -145,8 +147,13 @@ export default function Quiz() {
     setGameOver(false);
   }
 
+  function toggleStartScreen() {
+    setShowStart(false);
+  }
+
   return (
     <section className="quiz">
+      {showStart && <Start handleClick={toggleStartScreen} />}
       {questionsArray.length > 0 ? questionsArray : null}
       <section className="btn-container">
         <button

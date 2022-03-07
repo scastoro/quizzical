@@ -9,8 +9,10 @@ body {
 }
 
 .landing-page {
+  position: absolute;
+  left: 0;
   width: 550px;
-  height: 100vh;
+  height: 700px;
   background: url(./images/blue_blob.png) left bottom no-repeat,
     url(./images/yellow_blob.png) right top no-repeat;
   background-color: #f5f7fb;
@@ -44,6 +46,8 @@ body {
 }
 
 .start-quiz-btn {
+  cursor: pointer;
+  border: none;
   width: 193px;
   height: 52px;
   background: #4d5b9e;
@@ -56,7 +60,17 @@ body {
   color: #f5f7fb;
 }
 
+.start-quiz-btn:hover {
+  opacity: 75%;
+}
+
+.start-quiz-btn:active {
+  box-shadow: inset 1px 1px 10px #333;
+}
+
 .quiz {
+  margin: 0 auto;
+  position: relative;
   padding-left: 75px;
   width: 550px;
   height: 700px;
@@ -136,6 +150,9 @@ body {
 }
 .check-answers:hover {
   opacity: 75%;
+}
+.check-answers:active {
+  box-shadow: inset 1px 1px 10px #333;
 }
 .game-score {
   font-family: "Inter";
