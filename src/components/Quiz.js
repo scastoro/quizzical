@@ -7,6 +7,8 @@ export default function Quiz() {
   const [formQuestions, setFormQuestions] = React.useState([]);
   const [questionsArray, setQuestionsArray] = React.useState([]);
   const [count, setCount] = React.useState(0);
+  const [gameOver, setGameOver] = React.useState(false);
+  const [newGame, setNewGame] = React.useState(false);
 
   React.useEffect(() => {
     (async () => {
@@ -16,7 +18,7 @@ export default function Quiz() {
       const data = await response.json();
       setQuestions(data.results);
     })();
-  }, []);
+  }, [newGame]);
 
   React.useEffect(() => {
     (async () => {
@@ -45,13 +47,14 @@ export default function Quiz() {
             question.correct_answer,
           ].sort((a, b) => 0.5 - Math.random()))
       );
-      console.log(newQuestions);
       setFormQuestions(newQuestions);
     })();
   }, [questions]);
 
   function toggleClick(answerArr, correctAns, questId, event) {
-    console.log(event, answerArr, correctAns, questId);
+    if (gameOver) {
+      return;
+    }
     setFormQuestions((prevFormQuest) => {
       // Set formatted questions to new array with the isSelected property of the matching answer toggled
       // Map through containing array to find matching Question index
@@ -90,14 +93,10 @@ export default function Quiz() {
         return {
           ...question,
           answers: question.answers.map((answer) => {
-            if (answer.isSelected) {
-              return {
-                ...answer,
-                isChecked: true,
-              };
-            } else {
-              return answer;
-            }
+            return {
+              ...answer,
+              isChecked: true,
+            };
           }),
         };
       });
@@ -110,6 +109,7 @@ export default function Quiz() {
         <Question
           title={question.question}
           correct={question.correct_answer}
+          gameState={gameOver}
           answers={question.answers}
           id={question.id}
           handleClick={(event) =>
@@ -122,7 +122,6 @@ export default function Quiz() {
           }
         />
       ));
-      console.log(newQuestArr);
       setQuestionsArray(newQuestArr);
     })();
   }, [formQuestions]);
@@ -137,23 +136,36 @@ export default function Quiz() {
       });
     });
     setCount(count);
+    setGameOver(true);
+  }
+
+  function toggleNewGame() {
+    setNewGame((prevGame) => !prevGame);
+    setCount(0);
+    setGameOver(false);
   }
 
   return (
     <section className="quiz">
       {questionsArray.length > 0 ? questionsArray : null}
-      <button
-        onClick={() => {
-          checkAnswers();
-          countCorrect();
-        }}
-        className="check-answers"
-      >
-        Check answers
-      </button>
-      <span className="game-score">
-        {count > 0 && `You scored ${count}/5 correct answers`}
-      </span>
+      <section className="btn-container">
+        <button
+          onClick={
+            !gameOver
+              ? () => {
+                  checkAnswers();
+                  countCorrect();
+                }
+              : toggleNewGame
+          }
+          className="check-answers"
+        >
+          {!gameOver ? "Check answers" : "Play again"}
+        </button>
+        <p className="game-score">
+          {gameOver && `You scored ${count}/5 correct answers`}
+        </p>
+      </section>
     </section>
   );
 }

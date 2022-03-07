@@ -1,7 +1,13 @@
 import React from "react";
 import parse from "html-react-parser";
 
-export default function Question({ title, answers, correct, handleClick }) {
+export default function Question({
+  title,
+  answers,
+  gameState,
+  correct,
+  handleClick,
+}) {
   // const buttons = answers.map((item) => (
   //   <button className="answer">{parse(item)}</button>
   // ));
@@ -16,15 +22,21 @@ export default function Question({ title, answers, correct, handleClick }) {
               let styles = {};
               if (item.isSelected) {
                 styles.backgroundColor = "#D6DBF5";
+                styles.border = "none";
               }
-              if (item.isSelected && item.isChecked && item.id === correct.id) {
+              if (gameState) {
+                styles.cursor = "default";
+              }
+              if (item.isChecked && item.id === correct.id) {
                 styles.backgroundColor = "#94D7A2";
+                styles.border = "none";
               } else if (
                 item.isSelected &&
                 item.isChecked &&
                 item.id !== correct.id
               ) {
                 styles.backgroundColor = "#F8BCBC";
+                styles.border = "none";
                 styles.opacity = "50%";
               }
               return (

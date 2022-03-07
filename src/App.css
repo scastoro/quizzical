@@ -59,7 +59,7 @@ body {
 .quiz {
   padding-left: 75px;
   width: 550px;
-  height: 100vh;
+  height: 700px;
   background: url(./images/blue_blob_small.png) left bottom no-repeat,
     url(./images/yellow_blob_small.png) right top no-repeat;
   background-color: #f5f7fb;
@@ -71,6 +71,7 @@ body {
 
 .question {
   margin-top: 15px;
+  max-width: 400px;
 }
 
 .question-border {
@@ -79,6 +80,7 @@ body {
 }
 
 .question-heading {
+  max-width: 400px;
   font-family: "Karla", sans-serif;
   font-style: normal;
   font-weight: bold;
@@ -94,8 +96,8 @@ body {
 .answer {
   cursor: pointer;
   padding: 4px 10px;
-  margin: 12px 13px 14px 0;
-  border: solid 1px #4D5B9E;
+  margin: 12px 8px 14px 0;
+  border: solid 1px #4d5b9e;
   border-radius: 8px;
   font-family: "Inter";
   background-color: inherit;
@@ -107,20 +109,41 @@ body {
   color: #293264;
 }
 
+.btn-container {
+  width: 425px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .check-answers {
+  order: 1;
   cursor: pointer;
   width: 120px;
   height: 35px;
   background: #4d5b9e;
   border-radius: 10px;
-  font-family: Inter;
+  font-family: "Inter";
   font-style: normal;
   font-weight: 600;
   font-size: 10.24px;
   line-height: 12px;
   text-align: center;
   color: #f5f7fb;
-  margin-top: 20px;
   align-self: center;
-  margin-right: 75px;
+  border: none;
+}
+.check-answers:hover {
+  opacity: 75%;
+}
+.game-score {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12.8px;
+  line-height: 15px;
+  text-align: center;
+  margin-right: 15px;
+  color: #293264;
 }
